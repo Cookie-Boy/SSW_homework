@@ -1,10 +1,12 @@
 package ru.sibsutis.filefilter.configuration;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@AllArgsConstructor
+@Getter
+@Setter
 public class AppConfig {
     private List<String> inputFiles;
     private String outputPath;

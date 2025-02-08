@@ -17,4 +17,12 @@ public class ProcessorRegistry {
         processors.add(new DoubleProcessor());
         processors.add(new StringProcessor());
     }
+
+    public <T extends Processor> T getProcessor(Class<T> processorClass) {
+        return processors.stream()
+                .filter(processorClass::isInstance)
+                .map(processorClass::cast)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Processor not found: " + processorClass.getSimpleName()));
+    }
 }

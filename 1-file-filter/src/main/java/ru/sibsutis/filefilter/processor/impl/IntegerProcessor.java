@@ -1,15 +1,13 @@
 package ru.sibsutis.filefilter.processor.impl;
 
-import ru.sibsutis.filefilter.processor.Processor;
-
-public class IntegerProcessor implements Processor {
+public class IntegerProcessor extends AbstractProcessor<Integer> {
     @Override
     public void processLine(String line) {
-
+        data.add(Integer.parseInt(line));
     }
 
     @Override
-    public void writeResults(String outputPath, boolean appendMode) {
-
+    protected String getFileSuffix() {
+        return "integers.txt";
     }
 }

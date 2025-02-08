@@ -1,15 +1,13 @@
 package ru.sibsutis.filefilter.processor.impl;
 
-import ru.sibsutis.filefilter.processor.Processor;
-
-public class DoubleProcessor implements Processor {
+public class DoubleProcessor extends AbstractProcessor<Double> {
     @Override
     public void processLine(String line) {
-
+        data.add(Double.parseDouble(line));
     }
 
     @Override
-    public void writeResults(String outputPath, boolean appendMode) {
-
+    protected String getFileSuffix() {
+        return "doubles.txt";
     }
 }
