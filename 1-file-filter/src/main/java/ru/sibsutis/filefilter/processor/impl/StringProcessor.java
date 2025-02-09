@@ -12,10 +12,10 @@ public class StringProcessor extends AbstractProcessor<String> {
     }
 
     @Override
-    public void printStatistics() {
+    public void printStatistics(boolean fullStats) {
         System.out.println("=== Strings Statistics ===");
         System.out.println("Size: " + data.size());
-        if (!data.isEmpty()) {
+        if (!data.isEmpty() && fullStats) {
             int minLength = data.stream().mapToInt(String::length).min().orElse(0);
             int maxLength = data.stream().mapToInt(String::length).max().orElse(0);
             System.out.println("Min length: " + minLength + "\nMax length: " + maxLength);

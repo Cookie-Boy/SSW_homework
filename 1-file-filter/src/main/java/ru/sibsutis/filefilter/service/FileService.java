@@ -5,17 +5,14 @@ import ru.sibsutis.filefilter.processor.Processor;
 import ru.sibsutis.filefilter.processor.ProcessorRegistry;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 
 public class FileService {
     private final AppConfig config;
     private final ProcessorRegistry registry;
-    private static final Logger logger = Logger.getLogger(FileService.class.getName());
 
     public FileService(AppConfig config) {
         this.config = config;
@@ -33,7 +30,7 @@ public class FileService {
         Path path = Paths.get(filePath);
 
         if (!Files.exists(path) || !Files.isReadable(path)) {
-            logger.severe("Файл не найден или недоступен: " + filePath);
+            System.err.println("Файл не найден или недоступен: " + filePath);
             return;
         }
 
@@ -46,14 +43,14 @@ public class FileService {
                 }
             }
         } catch (IOException e) {
-            logger.severe("Ошибка чтения файла " + filePath + ": " + e.getMessage());
+            System.err.println("Ошибка чтения файла " + filePath + ": " + e.getMessage());
         }
     }
 
     private void saveResults() {
         for (Processor processor : registry.getProcessors()) {
             processor.writeResults(config.getOutputPath(), config.getPrefix(), config.isAppendMode());
-            processor.printStatistics();
+            processor.printStatistics(config.isFullStats());
         }
     }
 }

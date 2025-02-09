@@ -2,7 +2,11 @@ package ru.sibsutis.filefilter.processor.impl;
 
 import ru.sibsutis.filefilter.processor.Processor;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,20 +19,22 @@ public abstract class AbstractProcessor<T> implements Processor {
     public void writeResults(String outputPath, String prefix, boolean appendMode) {
         if (data.isEmpty()) return;
 
-        String fileName = outputPath + prefix + getFileSuffix();
+        Path filePath = Paths.get(outputPath, prefix + getFileSuffix());
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, appendMode))) {
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath, appendMode
+                ? java.nio.file.StandardOpenOption.APPEND
+                : java.nio.file.StandardOpenOption.CREATE)) {
             for (T item : data) {
                 writer.write(item.toString());
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.err.println("Ошибка записи в файл " + outputPath + ": " + e.getMessage());
+            System.err.println("Error: can not write to the file " + outputPath + ": " + e.getMessage());
         }
     }
 
     @Override
-    public void printStatistics() {
+    public void printStatistics(boolean fullStats) {
         System.out.println("=== Processor Statistics ===");
         System.out.println("Data size: " + data.size());
     }

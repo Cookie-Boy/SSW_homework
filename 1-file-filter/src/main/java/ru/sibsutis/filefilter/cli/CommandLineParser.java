@@ -15,25 +15,20 @@ public class CommandLineParser {
 
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
-                case "-o":
+                case "-o" -> {
                     if (i + 1 < args.length) outputPath = args[++i];
-                    break;
-                case "-p":
+                }
+                case "-p" -> {
                     if (i + 1 < args.length) prefix = args[++i];
-                    break;
-                case "-a":
-                    appendMode = true;
-                    break;
-                case "-f":
-                    fullStats = true;
-                    break;
-                default:
-                    inputFiles.add(args[i]);
+                }
+                case "-a" -> appendMode = true;
+                case "-f" -> fullStats = true;
+                default -> inputFiles.add(args[i]);
             }
         }
 
         if (inputFiles.isEmpty()) {
-            System.err.println("[WARNING] Не указаны входные файлы.");;
+            System.err.println("[WARNING] There are no input files.");;
         }
 
         return new AppConfig(inputFiles, outputPath, prefix, appendMode, fullStats);

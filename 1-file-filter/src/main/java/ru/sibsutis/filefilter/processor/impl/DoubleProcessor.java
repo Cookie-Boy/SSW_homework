@@ -18,10 +18,10 @@ public class DoubleProcessor extends AbstractProcessor<Double> {
     }
 
     @Override
-    public void printStatistics() {
+    public void printStatistics(boolean fullStats) {
         System.out.println("=== Doubles Statistics ===");
         System.out.println("Size: " + data.size());
-        if (!data.isEmpty()) {
+        if (!data.isEmpty() && fullStats) {
             double min = Collections.min(data);
             double max = Collections.max(data);
             double sum = data.stream().mapToDouble(Double::doubleValue).sum();

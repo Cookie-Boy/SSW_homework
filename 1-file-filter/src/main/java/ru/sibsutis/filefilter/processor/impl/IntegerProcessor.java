@@ -18,10 +18,10 @@ public class IntegerProcessor extends AbstractProcessor<Integer> {
     }
 
     @Override
-    public void printStatistics() {
+    public void printStatistics(boolean fullStats) {
         System.out.println("=== Integers Statistics ===");
         System.out.println("Size: " + data.size());
-        if (!data.isEmpty()) {
+        if (!data.isEmpty() && fullStats) {
             int min = Collections.min(data);
             int max = Collections.max(data);
             long sum = data.stream().mapToLong(Integer::longValue).sum();
