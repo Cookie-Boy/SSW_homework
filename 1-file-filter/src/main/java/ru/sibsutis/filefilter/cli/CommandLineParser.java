@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CommandLineParser {
     public AppConfig parse(String[] args) {
-        String outputPath = "D:\\";
+        String outputPath = "src/main/resources/output/";
         String prefix = "";
         boolean appendMode = false;
         boolean fullStats = false;

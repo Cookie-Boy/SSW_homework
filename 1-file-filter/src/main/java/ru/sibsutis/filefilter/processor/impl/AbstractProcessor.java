@@ -26,4 +26,10 @@ public abstract class AbstractProcessor<T> implements Processor {
             System.err.println("Ошибка записи в файл " + outputPath + ": " + e.getMessage());
         }
     }
+
+    @Override
+    public void printStatistics() {
+        System.out.println("=== Processor Statistics ===");
+        System.out.println("Data size: " + data.size());
+    }
 }
