@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractProcessor<T> implements Processor {
-    protected final List<T> data = new ArrayList<>();
+    public final List<T> data = new ArrayList<>();
 
     protected abstract String getFileSuffix();
 

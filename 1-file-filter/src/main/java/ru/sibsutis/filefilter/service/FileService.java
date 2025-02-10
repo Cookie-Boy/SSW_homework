@@ -14,9 +14,9 @@ public class FileService {
     private final AppConfig config;
     private final ProcessorRegistry registry;
 
-    public FileService(AppConfig config) {
+    public FileService(AppConfig config, ProcessorRegistry processorRegistry) {
         this.config = config;
-        this.registry = new ProcessorRegistry();
+        this.registry = processorRegistry;
     }
 
     public void processFiles() {
@@ -30,7 +30,7 @@ public class FileService {
         Path path = Paths.get(filePath);
 
         if (!Files.exists(path) || !Files.isReadable(path)) {
-            System.err.println("Файл не найден или недоступен: " + filePath);
+            System.err.println("Error: file not found or unavailable: " + filePath);
             return;
         }
 
@@ -43,7 +43,7 @@ public class FileService {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Ошибка чтения файла " + filePath + ": " + e.getMessage());
+            System.err.println("Error: can not read the file " + filePath + ": " + e.getMessage());
         }
     }
 
