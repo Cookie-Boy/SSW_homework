@@ -16,10 +16,10 @@ public class CommandLineParser {
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "-o" -> {
-                    if (i + 1 < args.length) outputPath = args[++i];
+                    if (i + 1 < args.length && !args[i + 1].startsWith("-")) outputPath = args[++i];
                 }
                 case "-p" -> {
-                    if (i + 1 < args.length) prefix = args[++i];
+                    if (i + 1 < args.length && !args[i + 1].startsWith("-")) prefix = args[++i];
                 }
                 case "-a" -> appendMode = true;
                 case "-f" -> fullStats = true;
