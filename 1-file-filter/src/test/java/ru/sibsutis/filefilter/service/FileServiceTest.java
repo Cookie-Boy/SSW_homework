@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import ru.sibsutis.filefilter.configuration.AppConfig;
+import ru.sibsutis.filefilter.configuration.StatsMode;
 import ru.sibsutis.filefilter.processor.impl.DoubleProcessor;
 import ru.sibsutis.filefilter.processor.impl.IntegerProcessor;
 import ru.sibsutis.filefilter.processor.ProcessorRegistry;
@@ -23,7 +24,7 @@ class FileServiceTest {
     private String outputPath;
     private String prefix;
     private boolean appendMode;
-    private boolean fullStats;
+    private StatsMode statsMode;
 
     @TempDir
     Path tempDir;
@@ -34,7 +35,7 @@ class FileServiceTest {
         outputPath = tempDir.toString();
         prefix = "result_";
         appendMode = false;
-        fullStats = false;
+        statsMode = StatsMode.NONE;
 
         AppConfig config = new AppConfig() {
             @Override
@@ -58,8 +59,8 @@ class FileServiceTest {
             }
 
             @Override
-            public boolean isFullStats() {
-                return fullStats;
+            public StatsMode getStatsMode() {
+                return statsMode;
             }
         };
 
@@ -167,6 +168,6 @@ class FileServiceTest {
         processor.data.add(1.1);
         processor.data.add(2.2);
 
-        processor.printStatistics(true);
+        processor.printStatistics(StatsMode.FULL);
     }
 }

@@ -3,12 +3,15 @@ package ru.sibsutis.filefilter.service;
 import ru.sibsutis.filefilter.configuration.AppConfig;
 import ru.sibsutis.filefilter.processor.Processor;
 import ru.sibsutis.filefilter.processor.ProcessorRegistry;
+import ru.sibsutis.filefilter.processor.TypeDetector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FileService {
     private final AppConfig config;
@@ -34,13 +37,16 @@ public class FileService {
             return;
         }
 
+        Map<Class<?>, Processor> processorMap = new HashMap<>();
+        for (Processor processor : registry.getProcessors()) {
+            processorMap.put(processor.getSupportedType(), processor);
+        }
+
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
             while ((line = reader.readLine()) != null) {
-                for (Processor processor : registry.getProcessors()) {
-                    if (processor.processLine(line))
-                        break;
-                }
+                Class<?> type = TypeDetector.detectType(line);
+                processorMap.get(type).processLine(line);
             }
         } catch (IOException e) {
             System.err.println("Error: can not read the file " + filePath + ": " + e.getMessage());
@@ -50,7 +56,7 @@ public class FileService {
     private void saveResults() {
         for (Processor processor : registry.getProcessors()) {
             processor.writeResults(config.getOutputPath(), config.getPrefix(), config.isAppendMode());
-            processor.printStatistics(config.isFullStats());
+            processor.printStatistics(config.getStatsMode());
         }
     }
 }

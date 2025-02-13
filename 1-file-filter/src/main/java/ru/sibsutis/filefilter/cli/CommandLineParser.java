@@ -1,6 +1,7 @@
 package ru.sibsutis.filefilter.cli;
 
 import ru.sibsutis.filefilter.configuration.AppConfig;
+import ru.sibsutis.filefilter.configuration.StatsMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ public class CommandLineParser {
         String outputPath = "src/main/resources/output/";
         String prefix = "";
         boolean appendMode = false;
-        boolean fullStats = false;
+        StatsMode statsMode = StatsMode.NONE;
         List<String> inputFiles = new ArrayList<>();
 
         for (int i = 0; i < args.length; i++) {
@@ -22,7 +23,8 @@ public class CommandLineParser {
                     if (i + 1 < args.length && !args[i + 1].startsWith("-")) prefix = args[++i];
                 }
                 case "-a" -> appendMode = true;
-                case "-f" -> fullStats = true;
+                case "-f" -> statsMode = StatsMode.FULL;
+                case "-s" -> statsMode = StatsMode.SHORT;
                 default -> inputFiles.add(args[i]);
             }
         }
@@ -31,6 +33,6 @@ public class CommandLineParser {
             System.err.println("[WARNING] There are no input files.");;
         }
 
-        return new AppConfig(inputFiles, outputPath, prefix, appendMode, fullStats);
+        return new AppConfig(inputFiles, outputPath, prefix, appendMode, statsMode);
     }
 }

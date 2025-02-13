@@ -13,5 +13,5 @@ public class AppConfig {
     private String outputPath;
     private String prefix;
     private boolean appendMode;
-    private boolean fullStats;
+    private StatsMode statsMode;
 }

@@ -2,6 +2,7 @@ package ru.sibsutis.filefilter.cli;
 
 import org.junit.jupiter.api.Test;
 import ru.sibsutis.filefilter.configuration.AppConfig;
+import ru.sibsutis.filefilter.configuration.StatsMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,13 +14,13 @@ class CommandLineParserTest {
     @Test
     void testParseWithAllOptions() {
         CommandLineParser parser = new CommandLineParser();
-        String[] args = {"-o", "src/main/resources/output/path/", "-p", "prefix_", "-a", "-f", "input1.txt", "input2.txt"};
+        String[] args = {"-o", "src/main/resources/output/path/", "-p", "prefix_", "-a", "-s", "input1.txt", "input2.txt"};
         AppConfig config = parser.parse(args);
 
         assertEquals("src/main/resources/output/path/", config.getOutputPath());
         assertEquals("prefix_", config.getPrefix());
+        assertEquals(StatsMode.SHORT, config.getStatsMode());
         assertTrue(config.isAppendMode());
-        assertTrue(config.isFullStats());
         assertEquals(Arrays.asList("input1.txt", "input2.txt"), config.getInputFiles());
     }
 
@@ -31,8 +32,8 @@ class CommandLineParserTest {
 
         assertEquals("src/main/resources/output/", config.getOutputPath());
         assertEquals("", config.getPrefix());
+        assertEquals(StatsMode.NONE, config.getStatsMode());
         assertFalse(config.isAppendMode());
-        assertFalse(config.isFullStats());
         assertEquals(Arrays.asList("input1.txt", "input2.txt"), config.getInputFiles());
     }
 
@@ -52,7 +53,7 @@ class CommandLineParserTest {
         String[] args = {"-f", "input1.txt"};
         AppConfig config = parser.parse(args);
 
-        assertTrue(config.isFullStats());
+        assertEquals(StatsMode.FULL, config.getStatsMode());
         assertEquals(List.of("input1.txt"), config.getInputFiles());
     }
 
@@ -84,8 +85,8 @@ class CommandLineParserTest {
 
         assertEquals("src/main/resources/output/", config.getOutputPath());
         assertEquals("pre_", config.getPrefix());
+        assertEquals(StatsMode.FULL, config.getStatsMode());
         assertTrue(config.isAppendMode());
-        assertTrue(config.isFullStats());
         assertTrue(config.getInputFiles().isEmpty());
     }
 

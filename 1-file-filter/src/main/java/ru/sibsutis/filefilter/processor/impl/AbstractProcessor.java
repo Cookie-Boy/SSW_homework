@@ -1,5 +1,6 @@
 package ru.sibsutis.filefilter.processor.impl;
 
+import ru.sibsutis.filefilter.configuration.StatsMode;
 import ru.sibsutis.filefilter.processor.Processor;
 
 import java.io.BufferedWriter;
@@ -34,8 +35,10 @@ public abstract class AbstractProcessor<T> implements Processor {
     }
 
     @Override
-    public void printStatistics(boolean fullStats) {
-        System.out.println("=== Processor Statistics ===");
-        System.out.println("Data size: " + data.size());
+    public void printStatistics(StatsMode statsMode) {
+        if (statsMode != StatsMode.NONE) {
+            System.out.println("=== Processor Statistics ===");
+            System.out.println("Data size: " + data.size());
+        }
     }
 }
