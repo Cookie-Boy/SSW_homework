@@ -11,7 +11,7 @@ public class Main {
 
         try (ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS)) {
             for (int i = 0; i < NUM_THREADS; i++) {
-                executor.execute(new ProgressTask(i, barrier, NUM_THREADS));
+                executor.execute(new ProgressTask(i, barrier));
             }
         }
     }

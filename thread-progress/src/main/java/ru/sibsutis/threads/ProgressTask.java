@@ -9,21 +9,20 @@ public class ProgressTask implements Runnable {
 
     private final int threadNumber;
     private final CyclicBarrier barrier;
-    private final int totalThreads;
 
-    public ProgressTask(int threadNumber, CyclicBarrier barrier, int totalThreads) {
+    public ProgressTask(int threadNumber, CyclicBarrier barrier) {
         this.threadNumber = threadNumber;
         this.barrier = barrier;
-        this.totalThreads = totalThreads;
     }
 
     @Override
     public void run() {
+        long startTime = System.currentTimeMillis();
         long threadId = Thread.currentThread().threadId();
         StringBuilder progress = new StringBuilder("[                    ]");
 
-        for (int j = 0; j < PROGRESS_LENGTH; j++) {
-            progress.setCharAt(j + 1, '#');
+        for (int i = 0; i < PROGRESS_LENGTH; i++) {
+            progress.setCharAt(i + 1, '#');
 
             synchronized (System.out) {
                 ConsoleUtils.moveCursorToLine(threadNumber + 1);
@@ -38,9 +37,12 @@ public class ProgressTask implements Runnable {
             }
         }
 
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+
         synchronized (System.out) {
-            ConsoleUtils.moveCursorToLine(threadNumber + totalThreads + 2);
-            System.out.printf("Thread %d (ID: %d) finished%n", threadNumber + 1, threadId);
+            ConsoleUtils.moveCursorToLine(threadNumber + 1);
+            System.out.printf("Thread %d (ID: %d) finished in %d ms\033[K%n", threadNumber + 1, threadId, elapsedTime);
         }
     }
 }
