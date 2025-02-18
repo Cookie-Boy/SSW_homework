@@ -14,5 +14,7 @@ public class Main {
                 executor.execute(new ProgressTask(i, barrier));
             }
         }
+
+        System.out.println();
     }
 }
