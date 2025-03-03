@@ -14,5 +14,5 @@ public class Pet {
     private String name;
     private Category category;
     private List<Tag> tags;
-    private boolean isAvailable;
+    private Status status;
 }

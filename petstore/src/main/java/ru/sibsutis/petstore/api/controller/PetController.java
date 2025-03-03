@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.sibsutis.petstore.core.model.Pet;
 import ru.sibsutis.petstore.core.service.PetService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pet")
 public class PetController {
@@ -25,6 +27,11 @@ public class PetController {
     @GetMapping("/{petId}")
     public Pet getPet(@PathVariable Long petId) {
         return petService.getPet(petId);
+    }
+
+    @GetMapping
+    public List<Pet> getAllPets() {
+        return petService.getAllPets();
     }
 
     @PutMapping

@@ -1,34 +1,41 @@
 package ru.sibsutis.petstore.core.repository;
 
-import lombok.Getter;
 import org.springframework.stereotype.Repository;
 import ru.sibsutis.petstore.core.model.Pet;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
-@Getter
 @Repository
 public class PetRepository {
-    private List<Pet> pets;
+    private final HashMap<Long, Pet> pets = new HashMap<>();
 
     public Pet save(Pet pet) {
-        pets.add(pet);
+        if (pet.getId() == null) {
+            int i = 1;
+            while (pets.containsKey((long) i)) {
+                i++;
+            }
+            pet.setId((long) i);
+        }
+        pets.put(pet.getId(), pet);
         return pet;
     }
 
     public Pet delete(Pet pet) {
-        pets.remove(pet);
-        return pet;
+        return pets.remove(pet.getId());
     }
 
     public Pet deleteById(Long id) {
-        return delete(findById(id).orElse(null));
+        return delete(findById(id));
     }
 
-    public Optional<Pet> findById(Long id) {
-        return pets.stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
+    public Pet findById(Long id) {
+        return pets.getOrDefault(id, null);
+    }
+
+    public List<Pet> findAll() {
+        return new ArrayList<>(pets.values());
     }
 }
