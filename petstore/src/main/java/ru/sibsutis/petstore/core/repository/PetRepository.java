@@ -24,7 +24,7 @@ public class PetRepository {
     }
 
     public Pet delete(Pet pet) {
-        return pets.remove(pet.getId());
+        return pet != null ? pets.remove(pet.getId()) : null;
     }
 
     public Pet deleteById(Long id) {
