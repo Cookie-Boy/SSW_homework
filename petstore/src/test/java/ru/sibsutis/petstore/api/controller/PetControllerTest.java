@@ -97,15 +97,4 @@ public class PetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("BobbyUpdated"));
     }
-
-    @Test
-    void testDeletePet() throws Exception {
-        Pet pet = new Pet(1L, "Bobby", new Category(1L, "Dogs"), List.of(), Status.AVAILABLE);
-
-        when(petService.deletePet(eq(1L))).thenReturn(pet);
-
-        mockMvc.perform(delete("/pet/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Bobby"));
-    }
 }

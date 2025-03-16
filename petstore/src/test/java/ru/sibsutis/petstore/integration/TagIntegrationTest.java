@@ -1,0 +1,70 @@
+package ru.sibsutis.petstore.integration;
+
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import static io.restassured.http.ContentType.JSON;
+import static org.hamcrest.Matchers.*;
+
+@Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class TagIntegrationTest {
+
+    @Container
+    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15")
+            .withDatabaseName("testdb")
+            .withUsername("test")
+            .withPassword("test");
+
+    @LocalServerPort
+    private int port;
+
+    @BeforeAll
+    static void setup() {
+        RestAssured.baseURI = "http://localhost";
+    }
+
+    @DynamicPropertySource
+    static void configureProperties(org.springframework.test.context.DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+    }
+
+    @Test
+    void testCreateAndGetTag() {
+        String requestBody = """
+            {
+              "name": "Friendly"
+            }
+        """;
+
+        // Создание тега
+        int tagId = RestAssured.given()
+                .port(port)
+                .contentType(JSON)
+                .body(requestBody)
+                .when()
+                .post("/tag")
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("id");
+
+        // Получение тега
+        RestAssured.given()
+                .port(port)
+                .when()
+                .get("/tag/" + tagId)
+                .then()
+                .statusCode(200)
+                .body("name", equalTo("Friendly"));
+    }
+}
