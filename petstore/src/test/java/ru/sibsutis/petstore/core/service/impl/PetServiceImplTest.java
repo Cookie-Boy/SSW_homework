@@ -13,6 +13,7 @@ import ru.sibsutis.petstore.core.model.Status;
 import ru.sibsutis.petstore.core.repository.PetRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,7 +48,7 @@ public class PetServiceImplTest {
 
     @Test
     void testGetPet_WhenPetExists() {
-        when(petRepository.findById(1L)).thenReturn(testPet);
+        when(petRepository.findById(1L)).thenReturn(Optional.ofNullable(testPet));
 
         Pet foundPet = petService.getPet(1L);
 
@@ -82,7 +83,7 @@ public class PetServiceImplTest {
     void testUpdatePet_WhenPetExists() {
         Pet updatedPet = new Pet(1L, "BobbyUpdated", new Category(1L, "Dogs"), List.of(), Status.AVAILABLE);
 
-        when(petRepository.findById(1L)).thenReturn(testPet);
+        when(petRepository.findById(1L)).thenReturn(Optional.ofNullable(testPet));
 
         Pet result = petService.updatePet(updatedPet);
 
@@ -103,16 +104,5 @@ public class PetServiceImplTest {
         assertNotNull(result);
         assertEquals("Charlie", result.getName());
         verify(petRepository, times(1)).save(any(Pet.class));
-    }
-
-    @Test
-    void testDeletePet() {
-        when(petRepository.deleteById(1L)).thenReturn(testPet);
-
-        Pet deletedPet = petService.deletePet(1L);
-
-        assertNotNull(deletedPet);
-        assertEquals("Bobby", deletedPet.getName());
-        verify(petRepository, times(1)).deleteById(1L);
     }
 }

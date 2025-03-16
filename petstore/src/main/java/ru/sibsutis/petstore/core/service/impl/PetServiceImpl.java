@@ -27,7 +27,7 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet getPet(Long id) {
-        return Optional.ofNullable(petRepository.findById(id))
+        return petRepository.findById(id)
                 .orElseThrow(() -> new PetNotFoundException("Питомец не найден."));
     }
 
@@ -38,7 +38,7 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet updatePet(Pet newPet) {
-        Optional<Pet> optionalPet = Optional.ofNullable(petRepository.findById(newPet.getId()));
+        Optional<Pet> optionalPet = petRepository.findById(newPet.getId());
         Pet pet = optionalPet.orElseGet(Pet::new);
         pet.setId(newPet.getId());
         pet.setName(newPet.getName());
@@ -49,7 +49,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public Pet deletePet(Long id) {
-        return petRepository.deleteById(id);
+    public void deletePet(Long id) {
+        petRepository.deleteById(id);
     }
 }

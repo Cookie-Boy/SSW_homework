@@ -20,7 +20,7 @@ public class PetController {
     }
 
     @PostMapping
-    public Pet createPet(@Valid @RequestBody Pet pet) {
+    public Pet createPet(@RequestBody Pet pet) {
         return petService.createPet(pet);
     }
 
@@ -40,7 +40,7 @@ public class PetController {
     }
 
     @DeleteMapping("/{petId}")
-    public Pet deletePet(@PathVariable Long petId) {
-        return petService.deletePet(petId);
+    public void deletePet(@PathVariable Long petId) {
+        petService.deletePet(petId);
     }
 }
