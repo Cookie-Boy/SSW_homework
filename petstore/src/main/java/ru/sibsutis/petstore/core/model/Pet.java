@@ -25,7 +25,7 @@ public class Pet {
 
     @ManyToMany
     @JoinTable(
-            name = "pet_tag",
+            name = "pet_tags",
             joinColumns = @JoinColumn(name = "pet_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )

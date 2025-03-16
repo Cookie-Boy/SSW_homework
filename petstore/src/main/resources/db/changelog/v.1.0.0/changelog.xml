@@ -12,5 +12,6 @@
     <include file="create-category-table.xml" relativeToChangelogFile="true"/>
     <include file="create-tag-table.xml" relativeToChangelogFile="true"/>
     <include file="create-pet-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-pet-tags-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

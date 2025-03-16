@@ -11,6 +11,7 @@ import ru.sibsutis.petstore.core.model.Category;
 import ru.sibsutis.petstore.core.model.Pet;
 import ru.sibsutis.petstore.core.model.Status;
 import ru.sibsutis.petstore.core.repository.PetRepository;
+import ru.sibsutis.petstore.core.service.PetService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,13 +21,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PetServiceImplTest {
+public class PetServiceTest {
 
     @Mock
     private PetRepository petRepository;
 
     @InjectMocks
-    private PetServiceImpl petService;
+    private PetService petService;
 
     private Pet testPet;
 
