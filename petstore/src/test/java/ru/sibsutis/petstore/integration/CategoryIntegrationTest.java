@@ -20,9 +20,9 @@ class CategoryIntegrationTest {
     @Container
     static PostgreSQLContainer<?> postgreSQLContainer =
             new PostgreSQLContainer<>("postgres:17")
-                    .withDatabaseName("testdb")
-                    .withUsername("test")
-                    .withPassword("test");
+            .withDatabaseName("testdb")
+            .withUsername("test")
+            .withPassword("test");
 
     @LocalServerPort
     private int port;
@@ -43,7 +43,7 @@ class CategoryIntegrationTest {
     void testCreateAndGetCategory() {
         String requestBody = """
             {
-              "name": "Cats",
+              "name": "Cats"
             }
         """;
 
@@ -67,4 +67,3 @@ class CategoryIntegrationTest {
                 .body("name", equalTo("Cats"));
     }
 }
-

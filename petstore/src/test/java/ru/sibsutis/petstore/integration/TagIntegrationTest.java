@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.*;
 class TagIntegrationTest {
 
     @Container
-    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15")
+    static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:17")
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test");
@@ -46,7 +46,6 @@ class TagIntegrationTest {
             }
         """;
 
-        // Создание тега
         int tagId = RestAssured.given()
                 .port(port)
                 .contentType(JSON)
@@ -58,7 +57,6 @@ class TagIntegrationTest {
                 .extract()
                 .path("id");
 
-        // Получение тега
         RestAssured.given()
                 .port(port)
                 .when()
