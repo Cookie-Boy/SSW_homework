@@ -100,7 +100,7 @@ public interface CommentApi {
     @RequestMapping(value = "/comment/{commentId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Comment> getCommentById(@Parameter(in = ParameterIn.PATH, description = "ID of comment to return", required=true, schema=@Schema()) @PathVariable("commentId") Long commentId
+    ResponseEntity<?> getCommentById(@Parameter(in = ParameterIn.PATH, description = "ID of comment to return", required=true, schema=@Schema()) @PathVariable("commentId") Long commentId
 );
 
 
@@ -121,7 +121,7 @@ public interface CommentApi {
         produces = { "application/json" }, 
         consumes = { "application/json" }, 
         method = RequestMethod.PATCH)
-    ResponseEntity<Comment> updateCommentById(@Parameter(in = ParameterIn.HEADER, description = "Authorization token" ,required=true,schema=@Schema()) @RequestHeader(value="Authorization", required=true) String authorization
+    ResponseEntity<?> updateCommentById(@Parameter(in = ParameterIn.HEADER, description = "Authorization token" ,required=true,schema=@Schema()) @RequestHeader(value="Authorization", required=true) String authorization
 , @Parameter(in = ParameterIn.PATH, description = "ID of comment to update", required=true, schema=@Schema()) @PathVariable("commentId") Long commentId
 , @Parameter(in = ParameterIn.DEFAULT, description = "Update an existent comment", required=true, schema=@Schema()) @Valid @RequestBody Comment body
 );

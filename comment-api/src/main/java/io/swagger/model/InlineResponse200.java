@@ -7,6 +7,8 @@ import io.swagger.model.Comment;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.openapitools.jackson.nullable.JsonNullable;
 import io.swagger.configuration.NotUndefined;
@@ -22,9 +24,8 @@ import javax.validation.constraints.*;
 @Validated
 @NotUndefined
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2025-03-24T07:28:53.682475384Z[GMT]")
-
-
-public class InlineResponse200   {
+@AllArgsConstructor
+public class InlineResponse200 {
   @JsonProperty("content")
   @Valid
   private List<Comment> content = null;
