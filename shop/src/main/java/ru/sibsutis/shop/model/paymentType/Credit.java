@@ -1,6 +1,7 @@
 package ru.sibsutis.shop.model.paymentType;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "credit_payment")
+@PrimaryKeyJoinColumn(name = "payment_id")
 public class Credit extends Payment {
     private String number;
     private String type;

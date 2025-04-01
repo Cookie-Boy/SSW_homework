@@ -13,13 +13,10 @@
             <column name="amount" type="DECIMAL(19,2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="order_id" type="bigint">
-                <constraints nullable="false" unique="true" foreignKeyName="fk_payment_order" references="order(id)"/>
-            </column>
             <column name="status" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="varchar(20)">
+            <column name="payment_type" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

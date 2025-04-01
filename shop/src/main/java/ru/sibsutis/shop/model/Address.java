@@ -8,7 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Address {
+    @Column(name = "address_city") // Явное указание
     private String city;
+
+    @Column(name = "address_street")
     private String street;
+
+    @Column(name = "address_zipcode")
     private String zipcode;
 }

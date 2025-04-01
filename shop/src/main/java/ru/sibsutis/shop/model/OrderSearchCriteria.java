@@ -2,6 +2,7 @@ package ru.sibsutis.shop.model;
 
 import lombok.Data;
 import ru.sibsutis.shop.model.entity.Payment;
+import ru.sibsutis.shop.model.paymentType.PaymentStatus;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,6 @@ public class OrderSearchCriteria {
     private LocalDateTime toDate;
     private Class<? extends Payment> payment;
     private String customerName;
-    private String paymentStatus;
+    private PaymentStatus paymentStatus;
     private String orderStatus;
 }

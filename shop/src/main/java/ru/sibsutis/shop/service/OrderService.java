@@ -4,14 +4,12 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.sibsutis.shop.model.Address;
 import ru.sibsutis.shop.model.OrderSearchCriteria;
 import ru.sibsutis.shop.model.entity.Customer;
 import ru.sibsutis.shop.model.entity.Order;
 import ru.sibsutis.shop.model.entity.Payment;
 import ru.sibsutis.shop.repository.OrderRepository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
