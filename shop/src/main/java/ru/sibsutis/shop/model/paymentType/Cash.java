@@ -11,7 +11,7 @@ import ru.sibsutis.shop.model.entity.Payment;
 @Getter
 @Setter
 @Table(name = "cash_payment")
-@PrimaryKeyJoinColumn(name = "payment_id")
+@PrimaryKeyJoinColumn(name = "payment_id", referencedColumnName = "id")
 public class Cash extends Payment {
     private float cashTendered;
 }

@@ -1,5 +1,6 @@
 package ru.sibsutis.shop.integration;
 
+import jakarta.transaction.Transactional;
 import liquibase.Contexts;
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -36,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Testcontainers
-@ActiveProfiles("test") // Активируем test-профиль
+@ActiveProfiles("test")
 class OrderServiceIntegrationTest {
 
     @Container
@@ -51,9 +52,6 @@ class OrderServiceIntegrationTest {
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
     }
-
-    @Autowired
-    private DataSource dataSource;
 
     @Autowired
     private OrderService orderService;
@@ -71,20 +69,20 @@ class OrderServiceIntegrationTest {
     private Cash testCashPayment;
     private Order testOrder;
 
+    private void assertOrdersEqual(Order expected, Order actual) {
+        assertThat(actual.getId()).isEqualTo(expected.getId());
+        assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
+        assertThat(actual.getDate()).isEqualToIgnoringNanos(expected.getDate());
+        assertThat(actual.getCustomer().getId()).isEqualTo(expected.getCustomer().getId());
+        assertThat(actual.getPayment().getId()).isEqualTo(expected.getPayment().getId());
+    }
+
     @BeforeEach
+    @Transactional
     void setUp() throws Exception {
-        // Создаем Liquibase вручную
-        Connection connection = DataSourceUtils.getConnection(dataSource);
-        Database database = DatabaseFactory.getInstance()
-                .findCorrectDatabaseImplementation(new JdbcConnection(connection));
-        Liquibase liquibase = new Liquibase(
-                "db/changelog/db.changelog-master.xml",
-                new ClassLoaderResourceAccessor(),
-                database
-        );
-        // Полная пересоздание схемы перед каждым тестом
-        liquibase.dropAll();
-        liquibase.update(new Contexts());
+        orderRepository.deleteAll();
+        customerRepository.deleteAll();
+        paymentRepository.deleteAll();
 
         testCustomer = new Customer();
         testCustomer.setName("Test Customer");
@@ -92,20 +90,21 @@ class OrderServiceIntegrationTest {
         address.setCity("Новосибирск");
         address.setStreet("Кирова");
         testCustomer.setAddress(address);
-        customerRepository.save(testCustomer);
+        testCustomer = customerRepository.save(testCustomer);
 
-//        testCashPayment = new Cash();
-//        testCashPayment.setAmount(100.50);
-//        testCashPayment.setStatus(PaymentStatus.COMPLETED);
-//        testCashPayment.setCashTendered(100.50f);
-//        paymentRepository.save(testCashPayment);
+        testCashPayment = new Cash();
+        testCashPayment.setAmount(100.50);
+        testCashPayment.setStatus(PaymentStatus.COMPLETED);
+        testCashPayment.setCashTendered(100.50f);
+//        Не нужно, так как CascadeType.ALL
+//        testCashPayment = paymentRepository.save(testCashPayment);
 
         testOrder = new Order();
         testOrder.setCustomer(testCustomer);
         testOrder.setPayment(testCashPayment);
         testOrder.setDate(LocalDateTime.now());
         testOrder.setStatus("COMPLETED");
-        orderRepository.save(testOrder);
+        testOrder = orderRepository.save(testOrder);
     }
 
     @Test
@@ -120,7 +119,7 @@ class OrderServiceIntegrationTest {
         List<Order> result = orderService.findOrdersByCriteria(criteria);
 
         assertThat(result).hasSize(1);
-        assertThat(result.getFirst()).isEqualTo(testOrder);
+        assertOrdersEqual(testOrder, result.getFirst());
     }
 
     @Test
@@ -130,8 +129,8 @@ class OrderServiceIntegrationTest {
 
         List<Order> result = orderService.findOrdersByCriteria(criteria);
 
-        assertThat(result).hasSize(0);
-//        assertThat(result.getFirst()).isEqualTo(testOrder);
+        assertThat(result).hasSize(1);
+        assertOrdersEqual(testOrder, result.getFirst());
     }
 
     @Test
@@ -143,7 +142,7 @@ class OrderServiceIntegrationTest {
         List<Order> result = orderService.findOrdersByCriteria(criteria);
 
         assertThat(result).hasSize(1);
-        assertThat(result.getFirst()).isEqualTo(testOrder);
+        assertOrdersEqual(testOrder, result.getFirst());
     }
 
     @Test
@@ -154,18 +153,18 @@ class OrderServiceIntegrationTest {
         List<Order> result = orderService.findOrdersByCriteria(criteria);
 
         assertThat(result).hasSize(1);
-        assertThat(result.getFirst()).isEqualTo(testOrder);
+        assertOrdersEqual(testOrder, result.getFirst());
     }
 
     @Test
     void shouldFindOrdersByPaymentStatus() {
         OrderSearchCriteria criteria = new OrderSearchCriteria();
-            criteria.setPaymentStatus(PaymentStatus.COMPLETED);
+        criteria.setPaymentStatus(PaymentStatus.COMPLETED);
 
         List<Order> result = orderService.findOrdersByCriteria(criteria);
 
         assertThat(result).hasSize(1);
-        assertThat(result.getFirst()).isEqualTo(testOrder);
+        assertOrdersEqual(testOrder, result.getFirst());
     }
 
     @Test
@@ -176,7 +175,7 @@ class OrderServiceIntegrationTest {
         List<Order> result = orderService.findOrdersByCriteria(criteria);
 
         assertThat(result).hasSize(1);
-        assertThat(result.getFirst()).isEqualTo(testOrder);
+        assertOrdersEqual(testOrder, result.getFirst());
     }
 
     @Test
@@ -199,6 +198,6 @@ class OrderServiceIntegrationTest {
         List<Order> result = orderService.findOrdersByCriteria(criteria);
 
         assertThat(result).hasSize(1);
-        assertThat(result.getFirst()).isEqualTo(testOrder);
+        assertOrdersEqual(testOrder, result.getFirst());
     }
 }

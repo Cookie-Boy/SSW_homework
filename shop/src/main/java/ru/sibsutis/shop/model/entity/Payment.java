@@ -9,7 +9,7 @@ import ru.sibsutis.shop.model.paymentType.PaymentStatus;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "payment_type")
+@DiscriminatorColumn(name = "payment_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

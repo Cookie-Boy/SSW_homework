@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "credit_payment")
-@PrimaryKeyJoinColumn(name = "payment_id")
+@PrimaryKeyJoinColumn(name = "payment_id", referencedColumnName = "id")
 public class Credit extends Payment {
     private String number;
     private String type;

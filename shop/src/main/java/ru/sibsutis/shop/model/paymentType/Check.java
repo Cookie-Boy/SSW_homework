@@ -12,7 +12,7 @@ import ru.sibsutis.shop.model.entity.Payment;
 @Getter
 @Setter
 @Table(name = "check_payment")
-@PrimaryKeyJoinColumn(name = "payment_id")
+@PrimaryKeyJoinColumn(name = "payment_id", referencedColumnName = "id")
 public class Check extends Payment {
     private String name;
 
