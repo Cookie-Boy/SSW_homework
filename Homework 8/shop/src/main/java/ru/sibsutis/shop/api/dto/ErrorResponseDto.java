@@ -1,4 +1,4 @@
-package ru.sibsutis.petstore.api.dto;
+package ru.sibsutis.shop.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

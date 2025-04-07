@@ -1,9 +1,6 @@
 package ru.sibsutis.shop.core.model.entity.payment;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "check_payment")
 @PrimaryKeyJoinColumn(name = "payment_id", referencedColumnName = "id")
+@DiscriminatorValue("CHECK")
 public class Check extends Payment {
     private String name;
 

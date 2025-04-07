@@ -14,5 +14,8 @@
     <include file="create-user-tables.xml" relativeToChangelogFile="true"/>
     <include file="create-order-table.xml" relativeToChangelogFile="true"/>
     <include file="create-order_detail-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-session-table.xml" relativeToChangelogFile="true"/>
+    <include file="insert-initial-payment.xml" relativeToChangelogFile="true"/>
+    <include file="insert-initial-item.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
