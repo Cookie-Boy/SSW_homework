@@ -22,6 +22,7 @@
                 <constraints nullable="false" foreignKeyName="fk_customer_user"
                              references="user(id)" primaryKey="true"/>
             </column>
+            <column name="name" type="VARCHAR(255)"/>
             <column name="address_city" type="VARCHAR(255)"/>
             <column name="address_street" type="VARCHAR(255)"/>
             <column name="address_zipcode" type="VARCHAR(20)"/>

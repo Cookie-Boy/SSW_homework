@@ -16,6 +16,8 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "id")
 public class Customer extends User {
 
+    private String name;
+
     @Embedded
     private Address address;
 
