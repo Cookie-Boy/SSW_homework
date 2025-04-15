@@ -1,5 +1,6 @@
 package ru.sibsutis.shop.core.model.measurement;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,11 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Weight extends Measurement {
+@Embeddable
+public class Weight {
+    @Embedded
+    private Measurement measurement;
+
+    @Column(name = "shipping_weight_value")
     private BigDecimal value;
 }

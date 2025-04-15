@@ -10,7 +10,9 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="quantity" type="INTEGER"/>
+            <column name="quantity_value" type="INTEGER"/>
+            <column name="measurement_name" type="VARCHAR(50)"/>
+            <column name="measurement_symbol" type="VARCHAR(10)"/>
             <column name="tax_status" type="VARCHAR(50)"/>
             <column name="order_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_order_detail_order"

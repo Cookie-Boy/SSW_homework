@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.sibsutis.shop.core.model.converter.WeightConverter;
 import ru.sibsutis.shop.core.model.measurement.Weight;
 
 @Entity
@@ -18,7 +17,11 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Convert(converter = WeightConverter.class)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "measurement.name", column = @Column(name = "measurement_name")),
+            @AttributeOverride(name = "measurement.symbol", column = @Column(name = "measurement_symbol"))
+    })
     private Weight shippingWeight;
 
     private String description;

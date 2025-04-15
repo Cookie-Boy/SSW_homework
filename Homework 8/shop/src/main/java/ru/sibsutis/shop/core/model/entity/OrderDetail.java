@@ -3,7 +3,6 @@ package ru.sibsutis.shop.core.model.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.sibsutis.shop.core.model.converter.QuantityConverter;
 import ru.sibsutis.shop.core.model.measurement.Quantity;
 
 @Entity
@@ -14,7 +13,11 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Convert(converter = QuantityConverter.class)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "measurement.name", column = @Column(name = "measurement_name")),
+            @AttributeOverride(name = "measurement.symbol", column = @Column(name = "measurement_symbol"))
+    })
     private Quantity quantity;
 
     private String taxStatus;

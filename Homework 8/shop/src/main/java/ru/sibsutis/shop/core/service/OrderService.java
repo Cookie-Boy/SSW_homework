@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.sibsutis.shop.api.dto.OrderRequestDto;
 import ru.sibsutis.shop.api.dto.OrderResponseDto;
+import ru.sibsutis.shop.api.dto.SuccessResponseDto;
 import ru.sibsutis.shop.api.mapper.OrderMapper;
 import ru.sibsutis.shop.core.model.OrderSearchCriteria;
 import ru.sibsutis.shop.core.model.entity.Item;
@@ -15,10 +16,12 @@ import ru.sibsutis.shop.core.model.entity.OrderDetail;
 import ru.sibsutis.shop.core.model.entity.user.Customer;
 import ru.sibsutis.shop.core.model.entity.Order;
 import ru.sibsutis.shop.core.model.entity.payment.Payment;
+import ru.sibsutis.shop.core.model.entity.user.User;
 import ru.sibsutis.shop.core.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +58,8 @@ public class OrderService {
                     .orElseThrow(() -> new EntityNotFoundException("Item with id " + itemId + " not found"));
 
             detail.setItem(item);
+
+            System.out.println("quantity name: " + detail.getQuantity().getMeasurement().getName());
         }
 
         Order savedOrder = orderRepository.save(order);
@@ -63,12 +68,40 @@ public class OrderService {
 
     public List<OrderResponseDto> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-        return orderMapper.toDto(orders);
+        orders.forEach(order -> {
+            order.getOrderDetails().forEach(detail -> {
+                System.out.println("Name: " + detail.getQuantity().getMeasurement().getName());
+            });
+        });
+        return orders.stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
     }
 
+//    public List<OrderResponseDto> getAllOrders() {
+//        return orderRepository.findAll()
+//                .stream()
+//                .map(orderMapper::toDto)
+//                .collect(Collectors.toList());
+//    }
+
     public List<OrderResponseDto> getAllOrders(Long customerId) {
-        List<Order> orders = orderRepository.findAllByCustomerId(customerId);
-        return orderMapper.toDto(orders);
+        return orderRepository.findAllByCustomerId(customerId)
+                .stream()
+                .map(orderMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public SuccessResponseDto deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+        return new SuccessResponseDto(orderId, "Заказ успешно удален.");
+    }
+
+    @Transactional
+    public SuccessResponseDto deleteOrder(Long customerId, Long orderId) {
+        orderRepository.deleteByIdAndCustomerId(orderId, customerId);
+        return new SuccessResponseDto(orderId, "Заказ успешно удален.");
     }
 
     public List<Order> findOrdersByCriteria(OrderSearchCriteria criteria) {

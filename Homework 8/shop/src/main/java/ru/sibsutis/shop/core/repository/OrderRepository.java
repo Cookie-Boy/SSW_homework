@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
     List<Order> findAllByCustomerId(Long customerId);
+    void deleteByIdAndCustomerId(Long id, Long customerId);
 }

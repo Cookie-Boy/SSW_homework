@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.sibsutis.shop.api.dto.OrderRequestDto;
 import ru.sibsutis.shop.api.dto.OrderResponseDto;
+import ru.sibsutis.shop.api.dto.SuccessResponseDto;
 import ru.sibsutis.shop.core.model.entity.user.Role;
 import ru.sibsutis.shop.core.model.entity.user.User;
 import ru.sibsutis.shop.core.service.OrderService;
@@ -39,4 +40,12 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<SuccessResponseDto> deleteOrder(@AuthenticationPrincipal User user,
+                                                          @PathVariable Long orderId) {
+        if (user.getRole() == Role.ADMIN) {
+            return ResponseEntity.ok(orderService.deleteOrder(orderId));
+        }
+        return ResponseEntity.ok(orderService.deleteOrder(user.getId(), orderId));
+    }
 }

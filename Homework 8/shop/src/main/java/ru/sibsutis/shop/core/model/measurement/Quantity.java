@@ -1,5 +1,6 @@
 package ru.sibsutis.shop.core.model.measurement;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Quantity extends Measurement {
+@Embeddable
+public class Quantity {
+    @Embedded
+    private Measurement measurement;
+
+    @Column(name = "quantity_value")
     private Integer value;
 }

@@ -9,6 +9,7 @@ import ru.sibsutis.shop.core.model.entity.Order;
 import ru.sibsutis.shop.core.model.entity.OrderDetail;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
@@ -22,17 +23,16 @@ public interface OrderMapper {
     Order toEntity(OrderRequestDto dto);
 
     @Mapping(target = "item.id", source = "itemId")
+    @Mapping(target = "quantity.measurement.name", source = "quantity.name")
+    @Mapping(target = "quantity.measurement.symbol", source = "quantity.symbol")
     OrderDetail toEntity(OrderDetailDto dto);
 
-    @Mapping(source = "quantity.value", target = "quantity.value")
-    @Mapping(source = "quantity.name", target = "quantity.name")
-    @Mapping(source = "quantity.symbol", target = "quantity.symbol")
     @Mapping(source = "item.id", target = "itemId")
+    @Mapping(source = "quantity.measurement.name", target = "quantity.name")
+    @Mapping(source = "quantity.measurement.symbol", target = "quantity.symbol")
     OrderDetailDto toDto(OrderDetail detail);
 
     @Mapping(source = "customer.id", target = "userId")
     @Mapping(source = "payment.id", target = "paymentId")
     OrderResponseDto toDto(Order order);
-
-    List<OrderResponseDto> toDto(List<Order> order);
 }

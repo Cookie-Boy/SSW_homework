@@ -10,7 +10,9 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="shipping_weight" type="DECIMAL(19,2)"/>
+            <column name="shipping_weight_value" type="DECIMAL(19, 2)"/>
+            <column name="measurement_name" type="VARCHAR(50)"/>
+            <column name="measurement_symbol" type="VARCHAR(10)"/>
             <column name="description" type="VARCHAR(1000)"/>
         </createTable>
     </changeSet>
